@@ -1,15 +1,16 @@
 class RaxmlNg < Formula
+  # cite Kozlov_2019: "https://doi.org/10.1093/bioinformatics/btz305"
   desc "RAxML Next Generation: faster, easier-to-use and more flexible"
   homepage "https://sco.h-its.org/exelixis/web/software/raxml/"
   url "https://github.com/amkozlov/raxml-ng.git",
-    :tag => "0.5.1",
-    :revision => "8a3d6af12fbff60239744595631a468275d5a02a"
+    :tag      => "0.9.0",
+    :revision => "0a064e9a40f2e00828662795141659d946440c81"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
-    sha256 "9e453f2f3958b904ee68a07b41966d773b78a5018ad9471b536365b5e3a838b3" => :sierra_or_later
-    sha256 "a8209facb1b98e08db8d2a54bb78f7b81007d63c1419813b711eee6119d07871" => :x86_64_linux
+    sha256 "44d9f4c7f2631ec3c5761ff142d0ceec2e02ae2a700131fc3235b47b865ed105" => :sierra
+    sha256 "6becae15d7f01dd4fdc2a2a2c3c46cec50db2c42ac2dc1ed0f64b934c817e931" => :x86_64_linux
   end
 
   depends_on "autoconf" => :build
@@ -28,24 +29,18 @@ class RaxmlNg < Formula
   end
 
   def install
-    # Build release binaries
-    inreplace "CMakeLists.txt", "set (CMAKE_BUILD_TYPE DEBUG)", ""
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      system "make", "libpll"
-      system "make"
+      system "make", "install"
       if build.with? "open-mpi"
         system "cmake", "..", *std_cmake_args, "-DUSE_MPI=ON"
-        system "make", "libpll"
-        system "make"
+        system "make", "install"
       end
     end
-    bin.install Dir["bin/raxml-ng*"]
   end
 
   test do
     testpath.install resource("example")
-    args = %w[--all --msa dna.phy --model GTR+G --bs-trees 100 --tree pars{10} --force --threads 2]
-    system "#{bin}/raxml-ng", *args
+    system "#{bin}/raxml-ng", "--msa", "dna.phy", "--start", "--model", "GTR"
   end
 end

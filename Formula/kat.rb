@@ -1,20 +1,17 @@
 class Kat < Formula
-  include Language::Python::Virtualenv
-
   # cite Mapleson_2016: "https://doi.org/10.1093/bioinformatics/btw663"
   desc "K-mer Analysis Toolkit (KAT) analyses k-mer spectra"
   homepage "https://github.com/TGAC/KAT"
   url "https://github.com/TGAC/KAT/archive/Release-2.4.1.tar.gz"
   sha256 "068bd63b022588058d2ecae817140ca67bba81a9949c754c6147175d73b32387"
+  revision 2
   head "https://github.com/TGAC/KAT.git"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
-    sha256 "1fe502f358fa86157037fa0898aabf7bf987954ddfb0110ed79138baa0075c0d" => :sierra_or_later
-    sha256 "513bf8d955eb6d336c17933a035da9499ed6e038e15648e19d248d8ada7163e9" => :x86_64_linux
+    sha256 "716d18717e180adaeca2eadea2a9de1a6e799387e828c69e0beeb9ca348ba629" => :sierra
+    sha256 "e3dd3d91df335579c48e6d08decd591c302b8a42cabb7d6c5f01c6c4dc1e8c0d" => :x86_64_linux
   end
-
-  needs :cxx11
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -32,9 +29,10 @@ class Kat < Formula
     # Reduce memory usage for Circle CI.
     ENV["MAKEFLAGS"] = "-j8" if ENV["CIRCLECI"]
 
-    venv = virtualenv_create(libexec)
-    %w[tabulate].each do |r|
-      venv.pip_install resource(r)
+    resources.each do |r|
+      r.stage do
+        system "python3", *Language::Python.setup_install_args(libexec)
+      end
     end
 
     system "./build_boost.sh"

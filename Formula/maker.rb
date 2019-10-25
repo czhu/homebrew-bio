@@ -3,16 +3,21 @@ class Maker < Formula
   # cite Holt_2011: "https://doi.org/10.1186/1471-2105-12-491" # MAKER2
   # cite Campbell_2013: "https://doi.org/10.1104/pp.113.230144" # MAKER-P
   desc "Genome annotation pipeline"
-  homepage "http://www.yandell-lab.org/software/maker.html"
-  url "http://yandell.topaz.genetics.utah.edu/maker_downloads/static/maker-2.31.9.tgz"
-  sha256 "c92f9c8c96c6e7528d0a119224f57cf5e74fadfc5fce5f4b711d0778995cabab"
-  revision 1
+  homepage "https://www.yandell-lab.org/software/maker.html"
+  url "http://yandell.topaz.genetics.utah.edu/maker_downloads/static/maker-2.31.10.tgz"
+  sha256 "d3979af9710d61754a3b53f6682d0e2052c6c3f36be6f2df2286d2587406f07d"
+  revision 2
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
-    sha256 "c6cc8d7e23cae66426580681b726c6653a60f07fe654d6e6a3fcc8a8de2d7399" => :sierra_or_later
-    sha256 "d8219353cc1d7c8b339ccdcad812fbac80d1ae201ae0536244025a399eb9d9e9" => :x86_64_linux
+    sha256 "9d5e53a07e6e73dc09abdc9939a9f3f731535fdb0cc354935b3ff3a5e79e0c18" => :sierra
+    sha256 "6004e89464cf7b149fb339dd9aec0e614e90e13e0d1755f63f4d70de963f0ab2" => :x86_64_linux
+  end
+
+  devel do
+    url "http://yandell.topaz.genetics.utah.edu/maker_downloads/static/maker-3.01.02-beta.tgz"
+    sha256 "1b44a7d930f49de6cac10d2818c45c292a2a400cb873f443828582a40c4b6bb0"
   end
 
   depends_on "cpanminus" => :build
@@ -22,7 +27,10 @@ class Maker < Formula
   depends_on "exonerate"
   depends_on "repeatmasker"
   depends_on "snap"
-  depends_on "perl" unless OS.mac?
+  unless OS.mac?
+    depends_on "perl"
+    depends_on "sqlite"
+  end
 
   # Build MAKER with MPI support, but do not force the dependency on the user.
   if ENV["CIRCLECI"]
@@ -30,6 +38,10 @@ class Maker < Formula
   else
     depends_on "open-mpi" => :optional
   end
+
+  # Fix a bug fixed upstream in 3.01.02-beta.
+  # Pass --minintron and --maxintron to Exonerate when aligning protein.
+  patch :DATA if build.stable?
 
   def install
     ENV.prepend "PERL5LIB", Formula["bioperl"].libexec/"lib/perl5"
@@ -68,10 +80,25 @@ class Maker < Formula
     MAKER is not available for commercial use without a license. Those
     wishing to license MAKER for commercial use should contact Beth
     Drees at the University of Utah TCO to discuss your needs.
-    EOS
+  EOS
   end
 
   test do
     system "#{bin}/maker", "--version"
   end
 end
+
+__END__
+diff --git maker-2.31.9/lib/polisher/exonerate/protein.pm maker-3.01.02-beta/lib/polisher/exonerate/protein.pm
+index e65c855..5c238a3 100755
+--- maker-2.31.9/lib/polisher/exonerate/protein.pm
++++ maker-3.01.02-beta/lib/polisher/exonerate/protein.pm
+@@ -98,7 +98,7 @@ sub runExonerate {
+	if ($matrix) {
+	    $command .= " --proteinsubmat $matrix";
+	}
+-	$command .= " --showcigar ";
++	$command .= " --minintron $min_intron --maxintron $max_intron --showcigar";
+	$command .= " > $o_file";
+
+         my $w = new Widget::exonerate::protein2genome();

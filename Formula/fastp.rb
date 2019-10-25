@@ -2,20 +2,18 @@ class Fastp < Formula
   # cite Chen_2018: "https://doi.org/10.1101/274100"
   desc "Ultrafast all-in-one FASTQ preprocessor"
   homepage "https://github.com/OpenGene/fastp"
-  url "https://github.com/OpenGene/fastp/archive/v0.19.3.tar.gz"
-  sha256 "47e7a948e243ac6e39c43b599d9ad957c7c240071668d90e9d5cf7955991f67e"
+  url "https://github.com/OpenGene/fastp/archive/v0.20.0.tar.gz"
+  sha256 "8d751d2746db11ff233032fc49e3bcc8b53758dd4596fdcf4b4099a4d702ac22"
   head "https://github.com/OpenGene/fastp.git"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
-    sha256 "00047e6b4307fbe67375e771d5497319cacfad1180810c6a51a25beea4a9294c" => :sierra_or_later
-    sha256 "2b3a28e18767219af4e968b6e0e0415fe60129ef8518102d2b74668e6babb1c0" => :x86_64_linux
+    sha256 "93d1c52a97cd5aeac01e2edf299aa49fd1a28b37c42d9ba4cb2044814e6f9156" => :sierra
+    sha256 "94b2ab898bdd7dba321a0ab10ea594b19057575683f1b5fd53cf23166876d8a0" => :x86_64_linux
   end
 
   depends_on "zlib" unless OS.mac?
-
-  needs :cxx11
 
   def install
     system "make"

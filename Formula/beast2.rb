@@ -2,14 +2,14 @@ class Beast2 < Formula
   # cite Bouckaert_2014: "https://doi.org/10.1371/journal.pcbi.1003537"
   desc "Bayesian evolutionary analysis by sampling trees"
   homepage "https://www.beast2.org/"
-  url "https://github.com/CompEvol/beast2/archive/v2.5.0.tar.gz"
-  sha256 "678967e698a24ffa40b11e74b07016c064be75fd114f4ea42b21cc58d07d7557"
+  url "https://github.com/CompEvol/beast2/archive/v2.6.1.tar.gz"
+  sha256 "4d5314c7226b0a1e506be8b94239257e8de6746888519bf2159063b21dd171a8"
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
-    sha256 "6fe1fd9679d3526f70bc610ccc039a589f9a24fdfe84ebfd5b5cbefe953e7012" => :sierra_or_later
-    sha256 "333eea1f859d21c26249c6959fc9f2dec4c12da12d1f73f18c515da11c91640f" => :x86_64_linux
+    root_url "https://linuxbrew.bintray.com/bottles-bio"
+    sha256 "d172b12ab67807d7d3f1e61769782b24c47bf912a8ba27c2333311a7e6166f32" => :sierra
+    sha256 "36ebbabeb1f1e7b7f33ee8f6aebb2f438237539ea38e9607390ecf3d49b0391a" => :x86_64_linux
   end
 
   depends_on "ant" => :build

@@ -2,15 +2,14 @@ class Biobloomtools < Formula
   # cite Chu_2014: "https://doi.org/10.1093/bioinformatics/btu558"
   desc "BioBloom Tools (BBT): Bloom filter for bioinformatics"
   homepage "http://www.bcgsc.ca/platform/bioinfo/software/biobloomtools/"
-  url "https://github.com/bcgsc/biobloom/releases/download/2.0.13/biobloomtools-2.0.13.tar.gz"
-  sha256 "7b4aeef70feb3fc31db2f4695159523272eadd8787b33c2902e2970a7d569ba3"
-  revision 1
+  url "https://github.com/bcgsc/biobloom/releases/download/2.3.2/biobloomtools-2.3.2.tar.gz"
+  sha256 "a1e6b5a58750280c29f82f7d2f795efaeab8bebe1266f2e8f6e285649fd7f38a"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any
-    sha256 "1a5e0d13789ac7f2d43f23708b263de8ea822d9d18212e6bd7cbe5b42d20ccfe" => :sierra_or_later
-    sha256 "3e5c5dd1c574421d82b0a895b9b4eabceba04b8c5e38e5793e50925afe2cf486" => :x86_64_linux
+    sha256 "4181eb16f11624fc6f5750a9d8dda2f948866ddfdf6551ebe486a6f221e9cde0" => :sierra
+    sha256 "a495e45dd593d6c015da6840579409b91dc1d95c3fba721623af07e04ac0024e" => :x86_64_linux
   end
 
   head do
@@ -19,27 +18,54 @@ class Biobloomtools < Formula
     depends_on "automake" => :build
   end
 
-  fails_with :clang # needs openmp
-
   depends_on "boost" => :build
+  depends_on "google-sparsehash" => :build
+
   if OS.mac?
     depends_on "gcc" # for openmp
+    depends_on "cmake" => :build
+    # build sdsl-lite using gcc
+    resource "sdsl" do
+      url "https://github.com/simongog/sdsl-lite.git",
+      :revision => "0546faf0552142f06ff4b201b671a5769dd007ad",
+      :tag      => "v2.1.1"
+    end
   else
+    depends_on "sdsl-lite" => :build
     depends_on "zlib"
   end
 
+  fails_with :clang # needs openmp
+
   def install
     system "./autogen.sh" if build.head?
-    system "./configure",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--disable-silent-rules",
-      "--prefix=#{prefix}"
+    if OS.mac?
+      sdsl = buildpath/"sdsl"
+      resource("sdsl").stage do
+        ENV["MAKEFLAGS"] = "-j8" if ENV["CIRCLECI"]
+        ENV.cxx11
+        system "./install.sh", sdsl
+      end
+      system "./configure",
+        "--disable-debug",
+        "--disable-dependency-tracking",
+        "--disable-silent-rules",
+        "--prefix=#{prefix}",
+        "--with-sdsl=#{sdsl}"
+    else
+      system "./configure",
+        "--disable-debug",
+        "--disable-dependency-tracking",
+        "--disable-silent-rules",
+        "--prefix=#{prefix}"
+    end
     system "make", "install"
   end
 
   test do
     assert_match "Usage", shell_output("#{bin}/biobloommaker --help 2>&1")
     assert_match "Usage", shell_output("#{bin}/biobloomcategorizer --help 2>&1")
+    assert_match "Usage", shell_output("#{bin}/biobloommimaker --help 2>&1")
+    assert_match "Usage", shell_output("#{bin}/biobloommicategorizer --help 2>&1")
   end
 end

@@ -2,15 +2,15 @@ class Canu < Formula
   # cite Koren_2017: "https://doi.org/10.1101/gr.215087.116"
   desc "Single molecule sequence assembler"
   homepage "https://canu.readthedocs.org/en/latest/"
-  url "https://github.com/marbl/canu/archive/v1.7.tar.gz"
-  sha256 "c5be54b0ad20729093413e7e722a19637d32e966dc8ecd2b579ba3e4958d378a"
+  url "https://github.com/marbl/canu/archive/v1.8.tar.gz"
+  sha256 "30ecfe574166f54f79606038830f68927cf0efab33bdc3c6e43fd1448fa0b2e4"
   head "https://github.com/marbl/canu.git"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any
-    sha256 "25e519d43ded5a33afdd43fa3f757d65d6af3774257f13e6c78cf835650f4156" => :sierra_or_later
-    sha256 "07f832430879c3cd2baa67b7db097da135cd82ecfe218a9afb1bc7f861b46c0f" => :x86_64_linux
+    sha256 "59f3483787bad2a576927d253a6bb4f3ebed42b4ff39f7974fb52287340b8e0e" => :sierra
+    sha256 "b5601d86b86046f9bde3fb509fd33efcd04f81a2c34da2b2502a51c0529026ae" => :x86_64_linux
   end
 
   fails_with :clang # needs openmp

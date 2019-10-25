@@ -1,15 +1,16 @@
 class Bioperl < Formula
   # cite Stajich_2002: "https://doi.org/10.1101/gr.361602"
   desc "Open source Perl tools for bioinformatics, genomics and life science"
-  homepage "http://bioperl.org"
+  homepage "https://bioperl.org"
   url "https://cpan.metacpan.org/authors/id/C/CJ/CJFIELDS/BioPerl-1.007002.tar.gz"
   sha256 "17aa3aaab2f381bbcaffdc370002eaf28f2c341b538068d6586b2276a76464a1"
+  revision 3
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
-    sha256 "ba2174ceef73165a45f75f7640a86192e8030e0dbc9cf4e61a76dc99bfc016ca" => :sierra_or_later
-    sha256 "40549ab8543cf9460c5cfaa6a91c85457eb790f849a149e3b15542bff66ff3fd" => :x86_64_linux
+    sha256 "36b08831cc85e3550ee622b3d1c485f6bf9d2dcfd87ef9a9c33ba72f9bae8f94" => :sierra
+    sha256 "7a3a5d0a2179fe45c2d407f13bac0d5c484e2d80639a094baa353167ab4abf9d" => :x86_64_linux
   end
 
   depends_on "cpanminus" => :build

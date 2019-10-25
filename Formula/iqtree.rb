@@ -2,16 +2,15 @@ class Iqtree < Formula
   # cite Nguyen_2015: "https://doi.org/10.1093/molbev/msu300"
   desc "Efficient phylogenomic software by maximum likelihood"
   homepage "http://www.iqtree.org/"
-  url "https://github.com/Cibiv/IQ-TREE/archive/v1.6.5.tar.gz"
-  sha256 "1488cec17b2ce1e23dd4367c3a8d43c5d2ed3a965aba61d155034471fbd08154"
+  url "https://github.com/Cibiv/IQ-TREE/archive/v1.6.11.tar.gz"
+  sha256 "39906e59821b6241fbe2cf5676926ed89a05433a6116322d2d448e1622d9e1c2"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
-    sha256 "03ae383754dcc4e6b17d58a779fd977c09035f8b71de0bdc46f29652b6af2e6b" => :sierra_or_later
-    sha256 "1f7ba8351cc4a0c674d2f239c8b9e89a3af82769a972cb6935c66b62ccc5d924" => :x86_64_linux
+    cellar :any
+    sha256 "e4949bf5964090c5c1a9785d86a86cbcd7c3190fe503df08da08c50b5e3bc53b" => :sierra
+    sha256 "201e73a51356a687b02de381685b81451f01c9ae24c94fcc146368f0387172d8" => :x86_64_linux
   end
-
-  fails_with :clang # needs openmp
 
   depends_on "cmake" => :build
   depends_on "eigen" => :build # header only C++ library
@@ -19,7 +18,7 @@ class Iqtree < Formula
   depends_on "gcc" if OS.mac? # for openmp
   depends_on "zlib" unless OS.mac?
 
-  needs :cxx11
+  fails_with :clang # needs openmp
 
   def install
     # Reduce memory usage for Circle CI.

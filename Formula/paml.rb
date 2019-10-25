@@ -2,15 +2,15 @@ class Paml < Formula
   # cite Yang_2007: "https://doi.org/10.1093/molbev/msm088"
   desc "Phylogenetic analysis by maximum likelihood"
   homepage "http://abacus.gene.ucl.ac.uk/software/paml.html"
-  url "http://abacus.gene.ucl.ac.uk/software/paml4.9g.tgz"
-  version "4.9g"
-  sha256 "30092007a105324e4fdd5b5a4737098531269839cc561f7bab3acfaf0ea1b3cf"
+  url "http://abacus.gene.ucl.ac.uk/software/paml4.9i.tgz"
+  version "4.9i"
+  sha256 "48f474354434a28b3a2da25b31d3395591b3a49c61980418470cfc56562000e1"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
-    sha256 "a405e3b54cbb5f2a9ad8296c68500d83723a420ba6a3f47cecfad7c459a8a0b4" => :sierra_or_later
-    sha256 "de947f72f5e61e42f15a75f874daa62161ca6f1a462529c9fdd4fbb47a437b75" => :x86_64_linux
+    sha256 "e06d36db51df737038660dfec71f75d26dd86ad1061072fba9c60b7a7b324986" => :sierra
+    sha256 "6fd44750c1a4ada0f8689c3e7364c23a1a0934ab7599b89250d0eb959a5d01f9" => :x86_64_linux
   end
 
   def install

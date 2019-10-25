@@ -1,29 +1,36 @@
 class BaliPhy < Formula
   # cite Suchard_2006: "http://dx.doi.org/10.1093/bioinformatics/btl175"
+  # cite Redelings_2014: "https://dx.doi.org/10.1093/molbev/msu174"
   desc "Bayesian co-estimation of phylogenies and multiple alignments"
   homepage "http://www.bali-phy.org/"
-  url "https://github.com/bredelings/BAli-Phy/archive/3.1.4.tar.gz"
-  sha256 "83124383533d12ea335e81e63a202ca97d850e8962b1a77e6166ae0fd0ebffa0"
+  url "https://github.com/bredelings/BAli-Phy/archive/3.4.1.tar.gz"
+  sha256 "d05575278025516729446243fb41ff8588cdfdfbaeaf4792148d5b2e45742c18"
+  head "https://github.com/bredelings/BAli-Phy.git"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
-    sha256 "6405ad25a4aa5e204330758160ab47d9721b12d69cb7f7833c8ee7e486828618" => :sierra_or_later
-    sha256 "4f2c9a9c908873d2e23155a3e3289bacd8cd8353d85c6394eba0e7b738c31199" => :x86_64_linux
+    cellar :any
+    sha256 "0c05be48396fa1e0873af0131c8ef6870bffa2cdf59822e97310025d5bb937b3" => :sierra
+    sha256 "14215c6ab69ba7cd03a9939b29f565daef502f33f7989b8989961a332574164f" => :x86_64_linux
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pandoc" => :build
+  depends_on "pkg-config" => :build
+  depends_on "cairo"
 
   def install
     flags = %w[-C build install]
     # Reduce memory usage for Circle CI
-    flags += %w[-j 4] if ENV["CIRCLECI"]
+    flags << "-j4" if ENV["HOMEBREW_CIRCLECI"]
     system "meson", "build", "--prefix=#{prefix}"
     system "ninja", *flags
   end
 
   test do
     system "#{bin}/bali-phy", "--version"
+    system "#{bin}/bali-phy", "#{doc}/examples/sequences/5S-rRNA/5d.fasta", "--iter=150"
+    system "#{bin}/bp-analyze", "5d-1"
   end
 end

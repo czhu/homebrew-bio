@@ -1,31 +1,30 @@
 class Skesa < Formula
+  # cite Souvorov_2018: "https://doi.org/10.1186/s13059-018-1540-z"
   desc "Strategic Kmer Extension for Scrupulous Assemblies"
-  homepage "https://ftp.ncbi.nlm.nih.gov/pub/agarwala/skesa/"
-  url "https://ftp.ncbi.nlm.nih.gov/pub/agarwala/skesa/skesa.centos6.9"
-  version "2.2"
-  sha256 "26158881c6895529924147877d627fc2c702f4c83ace0b93e279b9d6144b9fc7"
+  homepage "https://github.com/ncbi/SKESA"
+  url "https://github.com/ncbi/SKESA/archive/v2.3.0.tar.gz"
+  sha256 "13832e41b69a94d9f64dee7685b4d05f2e94f807ad819afa8d4cd78cee54879d"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
-    cellar :any_skip_relocation
-    sha256 "252a040d1184b30c08dccea18cd6b34400b60cf1d241307d9a6e85ed329247b5" => :x86_64_linux
+    sha256 "8efd0cbd2c73b5bc891a9a22c8e8cb1a338febe8c2bc448f3d4320998abb895e" => :sierra
+    sha256 "1f1b6ce810c86616be30dc6267d65416fcfc1d1487083f9e6063242e068ea077" => :x86_64_linux
   end
 
-  depends_on :linux
-
-  unless OS.mac?
-    depends_on "patchelf" => :build
-    depends_on "zlib"
-  end
+  depends_on "boost"
+  depends_on "zlib" unless OS.mac?
 
   def install
-    bin.install Dir["skes*"].first => "skesa"
-    unless OS.mac?
-      system "patchelf",
-        "--set-interpreter", HOMEBREW_PREFIX/"lib/ld.so",
-        "--set-rpath", HOMEBREW_PREFIX/"lib",
-        bin/"skesa"
+    makefile = "Makefile.nongs"
+
+    # https://github.com/ncbi/SKESA/issues/6
+    if OS.mac?
+      inreplace makefile, "-Wl,-Bstatic", ""
+      inreplace makefile, "-Wl,-Bdynamic -lrt", ""
     end
+
+    system "make", "-f", makefile, "BOOST_PATH=#{Formula["boost"].opt_prefix}"
+    bin.install "skesa"
   end
 
   test do

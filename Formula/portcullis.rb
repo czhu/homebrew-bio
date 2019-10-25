@@ -5,15 +5,14 @@ class Portcullis < Formula
   homepage "https://github.com/maplesond/portcullis"
   url "https://github.com/maplesond/portcullis/archive/Release-1.1.0.tar.gz"
   sha256 "872c0dbd7515229ecc22c9bdcd72eb78dfe93a3c0bfd14af52c448c142fe892a"
+  revision 1
   head "https://github.com/maplesond/portcullis.git"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
-    sha256 "84338ad415271085e13df015eb979923b8c7db080c93b6fb534340f08d5e069d" => :sierra_or_later
-    sha256 "e9f5e571b9c40a054832112b4e94137844dbad291588708a22c083834a767edc" => :x86_64_linux
+    sha256 "52b593d877a74a1268a9bb75e40dc9fcd3ecc5e197d84dffec2fc01c0ec4bd79" => :sierra
+    sha256 "e91724794110a2c76755b1e480c479f1707d3dff25b6b7ef4b20f82e885fbf5c" => :x86_64_linux
   end
-
-  needs :cxx11
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
