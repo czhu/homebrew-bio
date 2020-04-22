@@ -5,15 +5,16 @@ class NoExternalPyCXXPackage < Requirement
     !quiet_system "python3", "-c", "import CXX"
   end
 
-  def message; <<~EOS
-    *** Warning, PyCXX detected! ***
-    On your system, there is already a PyCXX version installed, that will
-    probably make the build of Matplotlib fail. In python you can test if that
-    package is available with `import CXX`. To get a hint where that package
-    is installed, you can:
-        python3 -c "import os; import CXX; print(os.path.dirname(CXX.__file__))"
-    See also: https://github.com/Homebrew/homebrew-python/issues/56
-  EOS
+  def message
+    <<~EOS
+      *** Warning, PyCXX detected! ***
+      On your system, there is already a PyCXX version installed, that will
+      probably make the build of Matplotlib fail. In python you can test if that
+      package is available with `import CXX`. To get a hint where that package
+      is installed, you can:
+          python3 -c "import os; import CXX; print(os.path.dirname(CXX.__file__))"
+      See also: https://github.com/Homebrew/homebrew-python/issues/56
+    EOS
   end
 end
 
@@ -44,9 +45,6 @@ class Matplotlib < Formula
 
   depends_on "gtk+3" => :optional
   depends_on "pygobject3" if build.with? "gtk+3"
-
-  depends_on "pygtk" => :optional
-  depends_on "pygobject" if build.with? "pygtk"
 
   depends_on "pyqt" => :optional
 

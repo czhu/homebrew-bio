@@ -13,11 +13,9 @@ class Gfakluge < Formula
     sha256 "0f162dfa8f8ae6667b11354c6116a0a6e604900356be78ef4c211c4780dba637" => :x86_64_linux
   end
 
-  if OS.mac?
-    depends_on "gcc" # for openmp
-  else
-    depends_on "zlib"
-  end
+  depends_on "gcc" if OS.mac? # needs openmp
+
+  uses_from_macos "zlib"
 
   fails_with :clang # needs openmp
 
@@ -34,6 +32,7 @@ class Gfakluge < Formula
       S\t1\tACGTACGT\tLN:i:8
       L\t1\t+\t1\t+\t4M
     EOS
-    assert_equal "Number of nodes: 1\nNumber of edges: 1\nNumber of links: 1\nNumber of containments: 0\n", shell_output("#{bin}/gfak stats -n -e test.gfa")
+    assert_equal "Number of nodes: 1\nNumber of edges: 1\nNumber of links: 1\nNumber of containments: 0\n",
+                  shell_output("#{bin}/gfak stats -n -e test.gfa")
   end
 end

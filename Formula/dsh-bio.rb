@@ -1,14 +1,14 @@
 class DshBio < Formula
   desc "Tools for BED, FASTA, FASTQ, GFA1/2, GFF3, SAM, and VCF files"
   homepage "https://github.com/heuermh/dishevelled-bio"
-  url "https://search.maven.org/remotecontent?filepath=org/dishevelled/dsh-bio-tools/1.2.1/dsh-bio-tools-1.2.1-bin.tar.gz"
-  sha256 "11568c4bd5480f1afc80240818841bf6e6a61d77e9ba1f385689c3725fb5cac5"
+  url "https://search.maven.org/remotecontent?filepath=org/dishevelled/dsh-bio-tools/1.3.2/dsh-bio-tools-1.3.2-bin.tar.gz"
+  sha256 "30f3cd93ad9247705ba4452faa79e9081ce53b721c33a4ac19f01f5a347773ce"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
-    sha256 "a1be0d419c4ebc43bf2cfd5354b81a753b2222dd3a595d253d38ba382e2aaf5a" => :sierra
-    sha256 "11e5829cc90fecf7b59e4b7590fd44d8c9d9b2cdd423fb74399e30a6be469a0b" => :x86_64_linux
+    sha256 "42cffa5de3ad131f6c29a69843aad16dc939bb6790b3b7bfab0ee7ef88dda6a9" => :catalina
+    sha256 "e8809d4f7a4cbe09516612c34e21ba8bd94e0d44c448031661e48816f6868cf4" => :x86_64_linux
   end
 
   depends_on :java => "1.8+"

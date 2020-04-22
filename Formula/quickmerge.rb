@@ -13,7 +13,6 @@ class Quickmerge < Formula
   end
 
   depends_on "mummer"
-  depends_on "python@2"
 
   def install
     system "make", "-C", "merger"

@@ -11,6 +11,7 @@ class Apbspdb2pqr < Formula
   head "https://github.com/Electrostatics/apbs-pdb2pqr.git"
 
   bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any
     sha256 "20632b132bd4b3f2d5b76810b20d95a2980071f870957273b5d803a78586ef50" => :sierra
     sha256 "0a100baae07f10c659ce97c7750fe610fefe57bc84067e0d0fdccf5fa7cac09b" => :x86_64_linux
@@ -20,7 +21,6 @@ class Apbspdb2pqr < Formula
   depends_on "boost"
   depends_on "eigen"
   depends_on "python"
-  depends_on "python@2"
   depends_on "swig"
 
   def install
@@ -52,7 +52,14 @@ class Apbspdb2pqr < Formula
       inreplace "pdb2pqr.py.in", "@WHICHPYTHON@", "/usr/bin/env python"
       system "python", "scons/scons.py", "PREFIX=#{prefix}/pdb2pqr", "APBS=#{bin}/apbs", "BUILD_PDB2PKA=False"
       system "python", "scons/scons.py", "install"
-      cp_r %w[main.py main_cgi.py pka.py visualize.py AppService_types.py AppService_services_types.py AppService_services.py AppService_client.py], prefix/"pdb2pqr"
+      cp_r %w[main.py
+              main_cgi.py
+              pka.py
+              visualize.py
+              AppService_types.py
+              AppService_services_types.py
+              AppService_services.py
+              AppService_client.py], prefix/"pdb2pqr"
       cp_r Dir["*"], prefix/"pdb2pqr"
       ln_s prefix/"pdb2pqr/pdb2pqr.py", bin/"pdb2pqr"
     end

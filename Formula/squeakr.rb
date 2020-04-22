@@ -7,15 +7,17 @@ class Squeakr < Formula
   head "https://github.com/splatlab/squeakr.git"
 
   bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-bio"
     cellar :any_skip_relocation
     sha256 "6736628a4c3690300591032f69684e8a3c8ea411086931bfedc9e1c7a6394163" => :x86_64_linux
   end
 
   depends_on "boost"
   depends_on :linux # https://github.com/splatlab/squeakr/issues/40
-  depends_on "openssl"
-  depends_on "bzip2" unless OS.mac?
-  depends_on "zlib" unless OS.mac?
+  depends_on "openssl@1.1"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
 
   def install
     inreplace "Makefile", "-lboost_system", "-lboost_system-mt"
